@@ -13,7 +13,9 @@ def create_lr_schedule(lr_base, decay_rate, decay_epochs, truncated_epoch, mode=
 
 
 def _lr_schedule(_current_epoch, _lr_base=0.002, _decay_rate=0.1, _decay_epochs=500,
-                 _truncated_epoch=2000, _mode='constant'):
+                 _truncated_epoch=None, start_epoch=100,_mode='constant'):
+    if _truncated_epoch is None:
+        _truncated_epoch = 2 * _decay_epochs
 
     if _mode is 'ladder':
         if _current_epoch < _truncated_epoch:
@@ -29,6 +31,14 @@ def _lr_schedule(_current_epoch, _lr_base=0.002, _decay_rate=0.1, _decay_epochs=
             
     elif _mode is 'constant':
             learning_rate = _lr_base
+    elif _mode is "tube_trans":
+        if _current_epoch < start_epoch:
+            learning_rate = _lr_base
+        elif _current_epoch < _truncated_epoch:
+            learning_rate = _lr_base * _decay_rate ** ((_current_epoch-start_epoch)/(_truncated_epoch - start_epoch))
+        else:
+            learning_rate = _lr_base * _decay_rate
+
     else:
         raise Exception('Please select the defined _mode,i.e.,constant')
     return learning_rate
