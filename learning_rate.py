@@ -7,9 +7,9 @@ Copyright
 import math
 
 
-def create_lr_schedule(lr_base, decay_rate, decay_epochs, truncated_epoch, mode=None):
+def create_lr_schedule(lr_base, decay_rate, decay_epochs, truncated_epoch, start_epoch, mode=None):
     return lambda epoch: _lr_schedule(epoch,  _lr_base=lr_base, _decay_rate=decay_rate,
-                                      _decay_epochs=decay_epochs, _truncated_epoch=truncated_epoch, _mode=mode)
+                                      _decay_epochs=decay_epochs, _truncated_epoch=truncated_epoch, start_epoch=start_epoch, _mode=mode)
 
 
 def _lr_schedule(_current_epoch, _lr_base=0.002, _decay_rate=0.1, _decay_epochs=500,
