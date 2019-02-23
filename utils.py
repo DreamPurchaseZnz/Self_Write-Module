@@ -12,6 +12,30 @@ import pandas as pd
 import tensorflow as tf
 import numpy as np
 
+def make_dir(root, folder_name):
+    path = os.path.join(root, folder_name)
+    if not os.path.exists(path):
+        os.makedirs(path)
+        print(path)
+        os.chdir(path)            # change to the path
+        return True
+    print("Folder has existed!")
+    return False
+
+
+def delete_empty_dir(dir):
+    if os.path.exists(dir):
+        if os.path.isdir(dir):
+            for d in os.listdir(dir):
+                path = os.path.join(dir, d)
+                if os.path.isdir(path):
+                    delete_empty_dir(path)
+        if not os.listdir(dir):
+            os.rmdir(dir)
+            print("remove the empty dir: {}".format(dir))
+    else:
+        print("Please start your performance!")   
+
 
 def check_dir(path, is_restart=False):
     name = os.path.split(path)[1]
